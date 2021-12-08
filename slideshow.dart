@@ -5,19 +5,30 @@ import 'package:flutter/material.dart';
 JUST ADD A LIST OF WIDGETS. EX.:
 
 MySlideshow(
- images: [
-   SvgPicture.asset('assets/images/image_1.svg'),
-   SvgPicture.asset('assets/images/image_2.svg'),
-   SvgPicture.asset('assets/images/image_3.svg'),
- ],
+  secondaryColor: Colors.grey,
+  primaryColor: Colors.blueAccent,
+  images: [
+    SvgPicture.asset('assets/images/image_1.svg'),
+    SvgPicture.asset('assets/images/image_2.svg'),
+    SvgPicture.asset('assets/images/image_3.svg'),
+  ],
 ),
 
 */
 
 class MySlideshow extends StatefulWidget {
+  const MySlideshow({
+    required this.images,
+    this.primaryColor = Colors.blue,
+    this.secondaryColor = Colors.black,
+    Key? key,
+  }) : super(key: key);
 
-  const MySlideshow({required this.images, Key? key}) : super(key: key);
+  // Properties
   final List<Widget> images;
+  final Color primaryColor;
+  final Color secondaryColor;
+
   @override
   _MySlideshowState createState() => _MySlideshowState();
 }
@@ -49,7 +60,6 @@ class _MySlideshowState extends State<MySlideshow> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
         ////// slides
         Expanded(
           child: PageView(
@@ -64,7 +74,15 @@ class _MySlideshowState extends State<MySlideshow> {
           width: double.infinity,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(widget.images.length, (index) => _Dot(pagePosition: pagePosition, index: index,))
+            children: List.generate(
+              widget.images.length,
+              (index) => _Dot(
+                pagePosition: pagePosition,
+                index: index,
+                primary: widget.primaryColor,
+                secondary: widget.secondaryColor,
+              ),
+            ),
           ),
         ),
       ],
@@ -78,21 +96,24 @@ class _Dot extends StatelessWidget {
     Key? key,
     required this.pagePosition,
     required this.index,
+    required this.primary,
+    required this.secondary,
   }) : super(key: key);
 
   final double pagePosition;
   final int index;
+  final Color primary;
+  final Color secondary;
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.all(5),
       height: (pagePosition >= index - 0.5 && pagePosition < index + 0.5) ? 15 : 10,
       width: (pagePosition >= index - 0.5 && pagePosition < index + 0.5) ? 15 : 10,
       decoration: BoxDecoration(
-        color: (pagePosition >= index - 0.5 && pagePosition < index + 0.5) ? Colors.blue : Colors.black,
+        color: (pagePosition >= index - 0.5 && pagePosition < index + 0.5) ? primary : secondary,
         shape: BoxShape.circle,
       ),
     );
@@ -101,7 +122,6 @@ class _Dot extends StatelessWidget {
 
 ////// images //////
 class _Slide extends StatelessWidget {
-
   const _Slide({
     required this.image,
     Key? key,
