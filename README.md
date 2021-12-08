@@ -1,3 +1,3 @@
 # Simple slideshow for flutter projects
 
-Create an slideshow for images or widgets easily, just add a list of widgets.
+Create an slideshow for images or widgets easily, just adding a list of widgets.
